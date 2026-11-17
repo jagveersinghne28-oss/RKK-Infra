@@ -1,0 +1,51 @@
+// Design tokens — taken from the Figma palette / type specimen.
+//   Primary  #0D211D · Secondary #18201E · Tertiary #B96F45 · Neutral #D8C7AA
+//   Headline: Hanken Grotesk · Body: Work Sans · Label: JetBrains Mono
+
+:root {
+  // surfaces (warm paper)
+  --bg: #fff8f2;
+  --surface: #fff2df;
+  --surface-2: #feeccd;
+  --surface-3: #f8e6c8;
+  --surface-4: #f2e0c2;
+  --white: #ffffff;
+
+  // brand
+  --primary: #0d211d;
+  --ink: #000504;
+  --text: #231a08;
+  --muted: #424846;
+  --label: #58605e;
+  --accent: #bd7348;
+  --accent-deep: #713611;
+  --accent-light: #ffdbca;
+  --sage: #758a84;
+  --sage-light: #b5cbc5;
+  --outline: #c2c8c5;
+  --outline-soft: rgba(194, 200, 197, 0.3);
+
+  // type
+  --f-head: 'Hanken Grotesk', system-ui, sans-serif;
+  --f-body: 'Work Sans', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  // elevation
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  --header-h: 80px;
+  --gutter: 80px;
+}
+
+@mixin bp($w) {
+  @media (max-width: $w) {
+    @content;
+  }
+}
+
+$bp-lg: 1100px;
+$bp-md: 820px;
+$bp-sm: 560px;
