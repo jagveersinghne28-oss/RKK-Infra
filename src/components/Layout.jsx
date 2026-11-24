@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import Icon from './Icon.jsx'
+import { ContactProvider, useContact } from './ContactModal.jsx'
 
 const NAV = [
   { to: '/', label: 'Home', end: true },
@@ -9,9 +10,57 @@ const NAV = [
   { to: '/expertise', label: 'Expertise' },
 ]
 
+const MORE = [
+  { to: '/gallery', label: 'Photo Gallery' },
+  { to: '/certificates', label: 'Certificates' },
+  { to: '/book', label: 'Tunnel Engineering Basics' },
+  { to: '/case-studies', label: 'Case Studies' },
+  { to: '/publications', label: 'Publications' },
+]
+
+function MoreMenu({ pathname }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const active = MORE.some((m) => m.to === pathname)
+
+  useEffect(() => setOpen(false), [pathname])
+  useEffect(() => {
+    if (!open) return undefined
+    const onDown = (e) => !ref.current?.contains(e.target) && setOpen(false)
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div className="site-header__more" ref={ref}>
+      <button
+        className={`site-header__link site-header__more-btn${active ? ' is-active' : ''}`}
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen((v) => !v)}
+      >
+        More <Icon name="chevron" className="icon icon--xs" />
+      </button>
+      <div className={`site-header__menu${open ? ' is-open' : ''}`}>
+        {MORE.map((m) => (
+          <NavLink key={m.to} to={m.to} className={({ isActive }) => `site-header__menu-link${isActive ? ' is-active' : ''}`}>
+            {m.label}
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Header() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const { openContact } = useContact()
 
   useEffect(() => setOpen(false), [pathname])
 
@@ -38,12 +87,13 @@ function Header() {
               {n.label}
             </NavLink>
           ))}
+          <MoreMenu pathname={pathname} />
         </nav>
 
         <div className="site-header__cta">
-          <a className="btn btn--dark btn--sm" href="mailto:?subject=Enquiry%20for%20Dr.%20Rakesh%20Kumar%20Khali">
+          <button className="btn btn--dark btn--sm" onClick={openContact}>
             Get in touch
-          </a>
+          </button>
           <img className="site-header__avatar" src="/images/profile.png" alt="Dr. Rakesh Kumar Khali" />
           <button
             className="site-header__burger"
@@ -65,7 +115,15 @@ const DIRECTORY = [
   ['Signature Tunnel Portfolios', '/projects'],
   ['TBM & NATM Methodologies', '/expertise'],
   ['World Tunnel Congress (WTC)', '/'],
-  ['Honors & Fellowships', '/'],
+  ['Honors & Fellowships', '/certificates'],
+]
+
+const MEDIA = [
+  ['Case Studies', '/case-studies'],
+  ['Publications', '/publications'],
+  ['Tunnel Engineering Basics', '/book'],
+  ['Certificates', '/certificates'],
+  ['Photo Gallery', '/gallery'],
 ]
 
 function Footer() {
@@ -96,6 +154,17 @@ function Footer() {
             <h4>Directory</h4>
             <ul>
               {DIRECTORY.map(([label, to]) => (
+                <li key={label}>
+                  <Link to={to}>{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="site-footer__col">
+            <h4>Monographs &amp; Media</h4>
+            <ul>
+              {MEDIA.map(([label, to]) => (
                 <li key={label}>
                   <Link to={to}>{label}</Link>
                 </li>
@@ -135,12 +204,12 @@ export default function Layout() {
   }, [pathname])
 
   return (
-    <>
+    <ContactProvider>
       <Header />
       <main className="page">
         <Outlet />
       </main>
       <Footer />
-    </>
+    </ContactProvider>
   )
 }

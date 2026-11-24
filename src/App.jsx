@@ -4,6 +4,11 @@ import Home from './pages/Home.jsx'
 import Expertise from './pages/Expertise.jsx'
 import Journey from './pages/Journey.jsx'
 import Projects from './pages/Projects.jsx'
+import Gallery from './pages/Gallery.jsx'
+import Certificates from './pages/Certificates.jsx'
+import Book from './pages/Book.jsx'
+import CaseStudies from './pages/CaseStudies.jsx'
+import Publications from './pages/Publications.jsx'
 
 export default function App() {
   return (
@@ -13,6 +18,11 @@ export default function App() {
         <Route path="journey" element={<Journey />} />
         <Route path="projects" element={<Projects />} />
         <Route path="expertise" element={<Expertise />} />
+        <Route path="gallery" element={<Gallery />} />
+        <Route path="certificates" element={<Certificates />} />
+        <Route path="book" element={<Book />} />
+        <Route path="case-studies" element={<CaseStudies />} />
+        <Route path="publications" element={<Publications />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
